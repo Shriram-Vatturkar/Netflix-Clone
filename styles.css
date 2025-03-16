@@ -171,8 +171,9 @@ button:hover {
 }
 
 .swiper-slide img {
-    width: 100%;
-    height: auto;
+    width: 200px; /* Fixed width for each movie image */
+    height: 300px; /* Fixed height for each movie image */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
     border-radius: 5px;
     transition: opacity 0.3s ease-in-out;
 }

@@ -1,9 +1,10 @@
 var swiper = new Swiper('.movie-slider', {
     slidesPerView: 5,
     spaceBetween: 10,
-    loop: false,
+    loop: true, // Enable looping
     centeredSlides: false,
     watchOverflow: true,
+    loopFillGroupWithBlank: true, // Fill empty space with blank slides
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
@@ -11,10 +12,15 @@ var swiper = new Swiper('.movie-slider', {
     on: {
         init: function () {
             this.update();
-            checkEnd(this);
         },
         slideChange: function () {
-            checkEnd(this);
+            // Stop all videos when the slide changes
+            document.querySelectorAll('.swiper-slide video').forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+                video.muted = true;
+            });
+
             // Play video of the current slide
             const activeSlide = this.slides[this.activeIndex];
             const video = activeSlide.querySelector('video');
@@ -24,27 +30,6 @@ var swiper = new Swiper('.movie-slider', {
             }
         },
     }
-});
-
-function checkEnd(swiper) {
-    if (swiper.isEnd) {
-        swiper.navigation.nextEl.classList.add('swiper-button-disabled');
-    } else {
-        swiper.navigation.nextEl.classList.remove('swiper-button-disabled');
-    }
-
-    if (swiper.isBeginning) {
-        swiper.navigation.prevEl.classList.add('swiper-button-disabled');
-    } else {
-        swiper.navigation.prevEl.classList.remove('swiper-button-disabled');
-    }
-}
-
-swiper.on('init', function () {
-    checkEnd(this);
-});
-swiper.on('slideChange', function () {
-    checkEnd(this);
 });
 
 // Add event listeners to play/pause video on hover
